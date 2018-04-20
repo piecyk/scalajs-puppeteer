@@ -20,6 +20,6 @@ object web extends ScalaJSModule {
   def moduleKind = ModuleKind.CommonJSModule
 
   def ivyDeps = Agg(
-    ivy"org.typelevel::cats-core::1.1.0"
+    ivy"io.monix::monix-eval::3.0.0-RC1"
   )
 }

@@ -1,11 +1,13 @@
 package web.puppeteer
 
 import scala.scalajs.js
+import scala.scalajs.js.|
 import scala.scalajs.js.Promise
 import scala.scalajs.js.typedarray.ArrayBuffer
 import scala.scalajs.js.annotation._
 
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/puppeteer/index.d.ts
+// https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md
 
 object PuppeteerFacade {
   @JSImport("puppeteer", JSImport.Default)
@@ -29,11 +31,30 @@ object PuppeteerFacade {
   }
 
   @js.native
-  trait Page extends js.Object {
+  trait JSHandle extends js.Object {
+    def jsonValue(): Promise[js.Any] = js.native
+  }
+
+  @js.native
+  trait ElementHandle extends JSHandle {
+  }
+
+  @js.native
+  trait FrameBase extends js.Object {
+    def $(selector: String): Promise[ElementHandle] = js.native
+  }
+
+  @js.native
+  trait EventEmitter extends js.Object {
+  }
+
+  @js.native
+  trait Page extends FrameBase with EventEmitter {
     def click(selector: String): Promise[Unit] = js.native
     def goto(url: String): Promise[Response] = js.native
     def screenshot(options: ScreenshotOptions): Promise[ArrayBuffer] = js.native
     def waitForNavigation(options: NavigationOptions): Promise[Response] = js.native
+    def evaluate(pageFunction: String): Promise[js.Any] = js.native
 
     val keyboard: Keyboard = js.native
   }
