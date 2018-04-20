@@ -36,13 +36,14 @@ object HelloG {
       val devtools = false
       val dumpio = false
       val slowMo = 0
-    }) flatMap { browser => browser.newPage() flatMap pageHandler doOnFinish {
-      case None =>
-        browser.close()
-      case Some(ex) =>
-        println(ex)
-        browser.close()
-    }}
+    }) flatMap { browser =>
+      browser.newPage() flatMap pageHandler onErrorRecoverWith {
+        case ex => {
+          println(ex)
+          Task.unit
+        }
+      } flatMap { _ => browser.close() }
+    }
   }
 }
 
